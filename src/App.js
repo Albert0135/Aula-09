@@ -1,18 +1,23 @@
-import React from 'react';
 import './App.css';
+import React, { useState } from 'react'
 import { Navbar, NavbarBrand } from 'reactstrap';
+import Menu from './components/MenuComponent';
+import { DISHES } from './shared/dishes';
 
 function App() {
+    const [dishes] = useState(DISHES);
+
   return (
-    <div className="App">
-      <Navbar dark color="primary">
-        <div className="container d-flex justify-content-between">
-          <NavbarBrand href="/">Ristorante Con Fusion</NavbarBrand>
-          <span className="navbar-text">Aluno: Brenno Elimar</span>
-        </div>
+    <div>
+        <Navbar dark color="primary" expand="md">
+          <div className="container">
+              <NavbarBrand href="/">Ristorante Con Fusion</NavbarBrand>
+              <div>Aluno: Albert França</div>
+          </div>
       </Navbar>
-    </div>
-  );
+      <Menu dishes={dishes} />
+  </div>
+);
 }
 
 export default App;
