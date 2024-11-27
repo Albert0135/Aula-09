@@ -1,163 +1,126 @@
-# Explicação do Componente `Menu`
+# Aula 10
 
-Este componente React exibe uma lista de pratos, utilizando dados armazenados localmente no estado e estilizando-os com o componente `Media` da biblioteca **reactstrap**.
+Durante a aula, aprendemos a:
+
+ - Atualizar o componente Menu para exibir informações usando Cards do Reactstrap.
+ - Gerenciar o estado do prato selecionado com o hook useState.
+ - Separar os dados dos pratos (dishes) em um arquivo próprio.
+ - Estruturar o componente App para integrar o Menu com os pratos carregados.
+
+---
+## MenuComponent.js
+
+**Descrição**
+
+O arquivo MenuComponent.js é responsável por exibir a lista de pratos (menu) e os detalhes do prato selecionado. Ele organiza as informações usando componentes estilizados do Reactstrap.
 
 ---
 
-## Estrutura do Código
-
-### Importação de Dependências
+## 1. Imports utilizados
 
 ```javascript
 import React, { useState } from 'react';
-import { Media } from 'reactstrap';
+import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
 ```
-
-```React```: Biblioteca principal para criar componentes e interfaces.
-
-```useState```: Hook para gerenciar o estado local no componente funcional.
-
-```reactstrap```: Biblioteca de componentes baseada no Bootstrap.
-
-```Media```: Componente usado para exibir layouts que envolvem mídia (como imagens e textos).
-
----
-
-# Declaração do Componente 
-
-```javascript
-const Menu = () => {
-```
-
- - Define o componente funcional ``Menu`` que encapsula toda a lógica e apresentação da interface de menu.
-
----
-
-# Gerenciamento do Estado com ``useState``
-
-```javascript
-const [dishes] = useState([
-    {
-        id: 0,
-        name: 'Uthappizza',
-        image: 'assets/images/uthappizza.png',
-        category: 'mains',
-        label: 'Hot',
-        price: '4.99',
-        description: 'A unique combination of Indian Uthappam (pancake) and Italian pizza, topped with Cerignola olives, ripe vine cherry tomatoes, Vidalia onion, Guntur chillies and Buffalo Paneer.'
-    },
-    {
-        id: 1,
-        name: 'Zucchipakoda',
-        image: 'assets/images/zucchipakoda.png',
-        category: 'appetizer',
-        label: '',
-        price: '1.99',
-        description: 'Deep fried Zucchini coated with mildly spiced Chickpea flour batter accompanied with a sweet-tangy tamarind sauce'
-    },
-    {
-        id: 2,
-        name: 'Vadonut',
-        image: 'assets/images/vadonut.png',
-        category: 'appetizer',
-        label: 'New',
-        price: '1.99',
-        description: 'A quintessential ConFusion experience, is it a vada or is it a donut?'
-    },
-    {
-        id: 3,
-        name: 'ElaiCheese Cake',
-        image: 'assets/images/elaicheesecake.png',
-        category: 'dessert',
-        label: '',
-        price: '2.99',
-        description: 'A delectable, semi-sweet New York Style Cheese Cake, with Graham cracker crust and spiced with Indian cardamoms'
-    }
-]);
-```
-
- - ``useState``:
- 
-    - Inicializa o estado ``dishes`` com uma lista de objetos que representam pratos.
-
- - Cada prato contém as seguintes propriedades:
-
-    - ``id``: Identificador único do prato.
-    - ``name``: Nome do prato.
-    - ``image``: Caminho da imagem correspondente
-    - ``category``: Categoria do prato (e.g., ``mains``, ``appetizer``, ``dessert``).
-    - ``label``: Rótulo adicional para o prato (e.g., ``Hot``, ``New``).
-    - ``price``: Preço do prato.
-    - ``description``: Breve descrição do prato.
-
----
-
-# Mapeamento e Renderização dos Pratos
-
-```javascript
-const menu = dishes.map((dish) => {
-    return (
-        <div key={dish.id} className="col-12 mt-5">
-            <Media tag="li">
-                <Media left middle>
-                    <Media object src={dish.image} alt={dish.name} />
-                </Media>
-                <Media body className="ml-5">
-                    <Media heading>{dish.name}</Media>
-                    <p>{dish.description}</p>
-                </Media>
-            </Media>
-        </div>
-    );
-});
-```
-
- - ``dishes.map()``:
-    - Cria uma nova lista de elementos JSX, renderizando cada prato.
-    - A propriedade ``key={dish.id}`` é usada para identificar cada item do DOM de forma única.
-
-**Estrutura de Cada Prato:**
-
- - Um ``div`` externo organiza o prato como um item de layout.
- - ``Media``: Utilizado para formatar o layout:
-    - ``Media left middle``: Exibe a imagem alinhada à esquerda e ao centro.
-    - ``Media object``: Insere a imagem com os atributos ``src`` (caminho da imagem) e ``alt`` (texto alternativo).
-    - ``Media body``: Contém o conteúdo textual do prato, como nome e descrição.
-    - ``Media heading``: Destaque para o nome do prato.
-
----
-
-# Renderização Final
-
-```javascript
-return (
-    <div claassName="container">
-        <div className="row">
-            <Media list>
-                {menu}
-            </Media>
-        </div>
-    </div>
-);
-```
-
- **Container Principal:**
-
- - A ``div`` principal com ``className="container"`` centraliza o layout.
- - Dentro dela, uma ``div`` com ``className="row"`` organiza os itens em uma linha.
-
-**Lista de Mídia:**
- - O componente ``Media list`` é usado para renderizar os pratos como uma lista organizada.
-
-**Correção Necessária:**
- - A palavra ``claassName`` contém um erro de digitação e deve ser corrigida para ``className``.
+ - React e useState: Criam o componente e gerenciam o estado do prato selecionado.
+ - Card e seus elementos: Estilizam a apresentação de cada prato e seus detalhes.
 
  ---
 
- # Exportação do Componente
+## 2. Componentes
+O principal componente definido é Menu.
 
- ```javascript
- export default Menu;
- ```
+ - **Responsabilidade:**
 
- - Permite que o componente ``Menu`` seja importado em outros arquivos e reutilizado.
+    - Renderizar a lista de pratos.
+    - Exibir os detalhes do prato selecionado.
+
+ - **Elementos principais dentro de Menu:**
+
+ - onDishSelect: 
+    - Define qual prato está selecionado.
+ - renderDish: 
+    - Renderiza os detalhes do prato selecionado.
+ - props.dishes.map: 
+    - Gera dinamicamente a lista de pratos com base nos dados recebidos via props.
+---
+## 3. Funções
+
+ - onDishSelect:
+
+    - Atualiza o estado selectedDish com o prato clicado.
+    - Serve para vincular a interação do usuário (clique) com a exibição dos detalhes do prato.
+
+ - renderDish:
+
+    - Exibe os detalhes do prato selecionado (imagem, nome e descrição).
+    - Retorna um card com as informações se um prato foi selecionado.  Caso contrário, retorna um elemento vazio.
+
+ - props.dishes.map:
+
+    - Itera sobre a lista de pratos (props.dishes) recebida via props.
+    - Cria dinamicamente um card para cada prato.
+    - Define um evento de clique (onClick) para atualizar o prato selecionado.
+
+---
+
+# dishes.js
+
+**Descrição**
+
+O arquivo dishes.js armazena os dados dos pratos. Ele centraliza e organiza as informações em um único lugar, facilitando o acesso e a manutenção.
+
+---
+**1. Propriedades**
+
+Cada prato é representado como um objeto com as seguintes propriedades:
+
+ - id: Identificador único.
+ - name: Nome do prato.
+ - image: Caminho da imagem do prato.
+ - category: Categoria do prato (ex.: entrada, sobremesa).
+ - label: Rótulo adicional (ex.: "Hot", "New").
+ - price: Preço do prato.
+ - description: Breve descrição do prato.
+ - comments: Lista de comentários sobre o prato.
+
+---
+
+**2. Tipo de dado utilizado**
+
+ - Estrutura: Um array de objetos (DISHES), onde cada objeto representa um prato.
+ - Propriedades como date: O campo date dentro de comments utiliza strings no formato ISO, representando datas.
+
+--- 
+
+# App.js
+
+**Descrição**
+
+O arquivo App.js é o ponto de entrada principal do aplicativo. Ele conecta os dados dos pratos (DISHES) ao componente Menu e configura o cabeçalho do aplicativo.
+
+---
+
+# 1. Função de const [dishes]
+
+```javascript
+const [dishes] = useState(DISHES);
+```
+
+ - O que faz: Define o estado inicial de dishes com os dados importados de dishes.js.
+
+ - **Importância:**
+
+    - Torna os dados dos pratos disponíveis para o componente Menu.
+    - O estado não muda, pois não há função de atualização associada.
+
+---
+
+# 2. Funcionamento de ```<Menu dishes={dishes} />```
+
+ - O que faz: Passa os dados de dishes como props para o componente Menu.
+
+ - **Como funciona:**
+
+     - O componente Menu acessa props.dishes para renderizar a lista de pratos e gerenciar a seleção.
+     - A separação dos dados (em dishes.js) e do layout (em MenuComponent.js) promove modularidade e reutilização.
